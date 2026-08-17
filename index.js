@@ -33,8 +33,8 @@ if (!global.db) {
 /* =========== Config ========== */
 const { config } = client;
 config.info = { 
-  nameBot: "O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې", 
-  nameChannel: "O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې", 
+  nameBot: "𝑨𝑳𝑯𝑾𝑨𝑹𝒀", 
+  nameChannel: "𝑨𝑳𝑯𝑾𝑨𝑹𝒀", 
   idChannel: "201556853817@newsletter",
   urls: {
     repo: "201556853817",
@@ -42,8 +42,8 @@ config.info = {
     channel: "https://whatsapp.com/channel/0029VaQim2bAu3aPsRVaDq3v"
   },
   copyright: { 
-    pack: 'O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې', 
-    author: 'O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې'
+    pack: '𝑨𝑳𝑯𝑾𝑨𝑹𝒀', 
+    author: '𝑨𝑳𝑯𝑾𝑨𝑹𝒀'
   },
   images: [
     "https://i.pinimg.com/originals/11/26/97/11269786cdb625c60213212aa66273a9.png",
