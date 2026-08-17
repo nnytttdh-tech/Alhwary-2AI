@@ -134,7 +134,7 @@ let handler = async (m, { conn, bot, command, args }) => {
 
   const messageText = `
 ╭━━━──〔 ${cat[3]} 〕──━━━╮
-   ${cat[3]} RAGNA BOT ${cat[3]}
+   ${cat[3]} 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑩𝑶𝑻 ${cat[3]}
 ╰━━━──〔 ✦ ≫ ──━━━╯
 
 『 ${cat[3]} قسم ${cat[1]} 』
