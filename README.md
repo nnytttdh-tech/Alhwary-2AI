@@ -1,8 +1,7 @@
-# ✨ Pomni AI- WhatsApp Bot
+# ✨ الهواري AI - WhatsApp Bot
 
 <div align="center">
-  <img src="https://i.pinimg.com/originals/e2/21/20/e221203f319df949ee65585a657501a2.jpg" alt="IMAGE" width="500"/>
-  
+
   [![GitHub](https://img.shields.io/badge/GitHub-VENi-blue?style=for-the-badge&logo=github)](https://github.com/deveni0)
   [![WhatsApp](https://img.shields.io/badge/WhatsApp-Owner-green?style=for-the-badge&logo=whatsapp)](https://wa.me/201554582851)
   [![WhatsApp](https://img.shields.io/badge/WhatsApp-Channel-orange?style=for-the-badge&logo=whatsapp)](https://whatsapp.com/channel/0029VaQim2bAu3aPsRVaDq3v)
@@ -49,12 +48,11 @@ npm start
 ## Cavirox Hosting 
 
 <div align="center">
-  <img src="https://b.top4top.io/p_3725xw4y21.jpg" alt="IMAGE" width="200"/>
 
 <h4>
 
 **For support, contact the developer [here](https://wa.me/201023727053?text=عند+مشكله)**  
-**Discount code:** `veni`
+**Discount code:** `هواري `
 
 </h4>
 
@@ -78,8 +76,8 @@ npm start
 
 <div align="center">
 
-**Made with ❤️ by [VENi Owner](https://github.com/deveni0)**
+**Made with ❤️ by الهواري AI**
 
-**© 2026 Pomni AI- All Rights Reserved**
+**© 2026 الهواري AI - All Rights Reserved**
 
 </div>
