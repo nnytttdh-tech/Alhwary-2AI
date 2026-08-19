@@ -27,20 +27,43 @@ let handler = async (m, { conn, command }) => {
     if (command === 'حفظ_تست' || command === 'تثبيت') {
       let q = m.quoted ? m.quoted : m
       let mime = (q.msg || q).mimetype || ''
-      if (!/video/.test(mime)) return m.reply('⚠️ اعمل ريبلاي على الفيديو اللي عايز تثبته واكتب .تثبيت أو .حفظ_تست')
+      if (!/video/.test(mime)) {
+        return m.reply(`╭─❖ ⚠️ تنبيه ❖─╮
+│ اعمل ريبلاي على الفيديو
+│ اللي عايز تثبته واكتب
+│ .تثبيت أو .حفظ_تست
+╰────────────────╯`)
+      }
 
-      await m.reply('⏳ جاري تحميل وتثبيت الفيديو الجديد بشكل دائم...')
+      await m.reply(`╭─❖ ⏳ جاري التثبيت ❖─╮
+│ جاري تحميل وتثبيت
+│ الفيديو الجديد بشكل دائم...
+╰────────────────╯`)
+
       let media = await q.download()
-
       fs.writeFileSync(videoPath, media)
-      return m.reply('✅ تم تثبيت الفيديو بنجاح كفيديو أساسي! جرب اكتب .تست في أي وقت.')
+
+      return m.reply(`╭─❖ ✅ تم بنجاح ❖─╮
+│ تم تثبيت الفيديو كفيديو
+│ أساسي بنجاح!
+│
+│ جرب اكتب .تست في أي وقت
+╰────────────────╯
+⟡ ⵌ 𝐴𝐿𝐻𝑊𝐴𝑅𝑌 SYSTEM ⵌ ⟡`)
     }
 
     // === 2- أمر تست لعرض الفيديو المثبت دائمًا ===
     if (command === 'تست') {
       if (!fs.existsSync(videoPath)) {
-        return m.reply('⚠️ أنت لسه ما ثبتش أي فيديو أساسي! اعمل ريبلاي على فيديو واكتب .تثبيت الأول.')
+        return m.reply(`╭─❖ ⚠️ تنبيه ❖─╮
+│ أنت لسه ما ثبتش أي
+│ فيديو أساسي!
+│
+│ اعمل ريبلاي على فيديو
+│ واكتب .تثبيت الأول
+╰────────────────╯`)
       }
+
       let videoSource = fs.readFileSync(videoPath)
 
       await conn.sendMessage(
@@ -48,7 +71,9 @@ let handler = async (m, { conn, command }) => {
         {
           video: videoSource,
           mimetype: 'video/mp4',
-          caption: '🎬 ALHWARY 𝐕𝐈𝐃𝐄𝐎',
+          caption: `╭─❖ 🎬 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑽𝑰𝑫𝑬𝑶 ❖─╮
+│ 👑 المطور: 𝑨𝑳𝑯𝑾𝑨𝑹𝒀
+╰────────────────╯`,
           gifPlayback: false,
           ptv: true
         },
@@ -61,9 +86,18 @@ let handler = async (m, { conn, command }) => {
     let q = m.quoted ? m.quoted : m
     let mime = (q.msg || q).mimetype || ''
 
-    if (!/video/.test(mime)) return m.reply('⚠️ اعمل ريبلاي على أي فيديو عشان أحوله لدائري فوراً!')
+    if (!/video/.test(mime)) {
+      return m.reply(`╭─❖ ⚠️ تنبيه ❖─╮
+│ اعمل ريبلاي على أي فيديو
+│ عشان أحوله لدائري فوراً!
+╰────────────────╯`)
+    }
 
-    await m.reply('⏳ جاري السيطرة على الفيديو وتحويله لهيئة دائري فخم...')
+    await m.reply(`╭─❖ ⏳ جاري التحويل ❖─╮
+│ جاري السيطرة على الفيديو
+│ وتحويله لهيئة دائري فخم...
+╰────────────────╯`)
+
     let media = await q.download()
 
     await conn.sendMessage(
@@ -71,7 +105,9 @@ let handler = async (m, { conn, command }) => {
       {
         video: media,
         mimetype: 'video/mp4',
-        caption: '🎬 ALHWARY PTV',
+        caption: `╭─❖ 🎬 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑷𝑻𝑽 ❖─╮
+│ 👑 المطور: 𝑨𝑳𝑯𝑾𝑨𝑹𝒀
+╰────────────────╯`,
         gifPlayback: false,
         ptv: true
       },
@@ -80,7 +116,9 @@ let handler = async (m, { conn, command }) => {
 
   } catch (e) {
     console.error(e)
-    await m.reply('❌ حدث خطأ أثناء تنفيذ الأمر.')
+    await m.reply(`╭─❖ ❌ خطأ ❖─╮
+│ حدث خطأ أثناء تنفيذ الأمر
+╰────────────────╯`)
   }
 }
 
