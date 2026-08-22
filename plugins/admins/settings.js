@@ -3,8 +3,8 @@ async function handler(m, { conn, command, args }) {
     const subCmd = args[0]?.toLowerCase();
     const menu = `
 ╭─❖⋆⋅⋆  ⋆⋅⋆❖─╮
-│ ✦ *نظام التفعيل والتشغيل* ✦
-│    ❤ I love you 
+│ ✦ *نظام التفعيل * ✦
+│    🫣 هواري بيقولك بحبك  
 ╰─❖⋆⋅⋆  ⋆⋅⋆❖─╯
 `;
     if (!subCmd) {
