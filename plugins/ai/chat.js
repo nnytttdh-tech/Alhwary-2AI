@@ -40,6 +40,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
 handler.help = ['𝐴𝐿𝐻𝑊𝐴𝑅𝑌'];
 handler.tags = ['ai'];
-handler.command = /^(deepseek|بوت|ديب-سيك)$/i;
+handler.command = /^(deepseek|ds|ديب-سيك)$/i;
 
 export default handler;
