@@ -8,25 +8,25 @@ const shuffledAdmins = [...groupAdmins].sort(() => Math.random() - 0.5);
 const shuffledMembers = [...groupMembers].sort(() => Math.random() - 0.5);
 
 let messageText = "";
-messageText += `🗃️│ الـاســم: ${metadata.subject}\n`;
-messageText += `📯│ تـاريـخ: ${new Date().toLocaleDateString('ar-EG')}\n\n`;
+messageText += `◇— 〔 ${metadata.subject} 〕 —◇\n`;
+messageText += `⌗ التاريخ： ${new Date().toLocaleDateString('ar-EG')}\n\n`;
 
-
-messageText += `↓👑 *الـمـشـرفـيـن (${shuffledAdmins.length})* 👑↓\n`;
+messageText += `⟢ ⚡ *الـمـشـرفـيـن (${shuffledAdmins.length})* ⚡ ⟣\n`;
 messageText += "```───────────────────\n";
 shuffledAdmins.forEach((admin, index) => {
-    messageText += `🇩🇪│ ${index + 1}. @${admin.split('@')[0]}\n`;
+    messageText += `»│ ${index + 1}. @${admin.split('@')[0]}\n`;
 });
 messageText += "───────────────────```\n\n";
 
-messageText += `↓👥 *الاعـضـاء (${shuffledMembers.length})* 👥↓\n`;
+messageText += `⟢ ✵ *الاعـضـاء (${shuffledMembers.length})* ✵ ⟣\n`;
 messageText += "```───────────────────\n";
 shuffledMembers.forEach((member, index) => {
-    messageText += `│ ${index + 1}. @${member.split('@')[0]}\n`;
+    messageText += `›│ ${index + 1}. @${member.split('@')[0]}\n`;
 });
 messageText += "───────────────────```\n\n";
 
-messageText += `> *إجمالي المشاركين — ${participants.length}*`;
+messageText += `◇──────────────◇\n`;
+messageText += `✦ إجمالي المشاركين: ${participants.length} ✦`;
 
 return conn.sendMessage(m.chat, { 
     text: messageText, 
