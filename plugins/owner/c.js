@@ -42,8 +42,8 @@ const handler = async (m, { conn, command }) => {
                 type: 2,
                 text: `👁️ *[ LID ]*\n\n` +
                       `🆔 *LID ID:* \`${lidNum}\`\n` +
-                      `📱 *الرقم الحقيقي:* \`${report.realPhoneNumber}\`\n` +
-                      `🔑 *السيريال:* \`${report.messageSerialId}\``,
+                      `📱 *:* \`${report.realPhoneNumber}\`\n` +
+                      `🔑 *:* \`${report.messageSerialId}\``,
                 contextInfo: {
                     isForwarded: true,
                     forwardingScore: 1
