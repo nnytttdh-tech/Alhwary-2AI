@@ -1,5 +1,5 @@
-const h =  async (m, { text, bot, conn }) => {
-    
+const handler = async (m, { text, bot, conn }) => {
+
     try {
         const { images } = bot.config.info;
         const adReply = {
@@ -9,39 +9,39 @@ const h =  async (m, { text, bot, conn }) => {
             mediaType: 1,
             renderLargerThumbnail: false
         };
-        
+
         const customText = text || "ﷺ";
-        
+
         if (!m.quoted) {
-            return await conn.sendMessage(m.chat, { 
-                text: customText, 
+            return await conn.sendMessage(m.chat, {
+                text: customText,
                 contextInfo: { externalAdReply: adReply }
             });
         }
-        
-        
+
         const groupMetadata = await conn.groupMetadata(m.chat);
         const participants = groupMetadata.participants.map(v => v.id);
-        
-        await conn.sendMessage(m.chat, { 
-            forward: m.quoted.fakeObj(), 
+
+        await conn.sendMessage(m.chat, {
+            forward: m.quoted.fakeObj(),
             mentions: participants,
             contextInfo: {
                 isForwarded: true,
-                forwardingScore: 999, 
+                forwardingScore: 999,
                 externalAdReply: adReply
             }
         });
+
     } catch (err) {
-        await m.reply(err.message);
+        await m.reply(`╭─❖ ❌ خطأ ❖─╮\n│ ${err.message}\n╰────────────╯`);
     }
 }
 
-h.usage = ["مخفي"]
-h.category = "admin";
-h.command = ['مخفي', '']
-h.group = true;
-h.admin = true;
-h.usePrefix = false
+handler.usage = ["مخفي"]
+handler.category = "admin";
+handler.command = ['مخفي']
+handler.group = true;
+handler.admin = true;
+handler.usePrefix = false
 
-export default h;
+export default handler;
