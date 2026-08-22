@@ -40,7 +40,7 @@ const handler = async (m, { conn, command }) => {
         return await conn.sendAiMessage(m.chat, [
             {
                 type: 2,
-                text: `👁️ *[ LID RESOLVER & TRACKER ]*\n\n` +
+                text: `👁️ *[ LID ]*\n\n` +
                       `🆔 *LID ID:* \`${lidNum}\`\n` +
                       `📱 *الرقم الحقيقي:* \`${report.realPhoneNumber}\`\n` +
                       `🔑 *السيريال:* \`${report.messageSerialId}\``,
