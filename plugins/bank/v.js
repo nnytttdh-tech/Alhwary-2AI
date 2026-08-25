@@ -7,13 +7,13 @@ const handler = async (m, { conn, command, text }) => {
     
     if (command === "تسجيل") {
         if (!text) {
-            return m.reply(`*📝 طريقة التسجيل:*\n\nتسجيل الاسم|العمر\n\nمثال:\nتسجيل ڤينوم|20`);
+            return m.reply(`*📝 طريقة التسجيل:*\n\nتسجيل الاسم|العمر\n\nمثال:\nتسجيل هواري|20`);
         }
         
         const [name, age] = text.split('|').map(s => s.trim());
         
         if (!name || !age) {
-            return m.reply(`*❌ خطأ:* يجب كتابة الاسم والعمر مفصولين بـ |\n\nمثال:\nتسجيل ڤينوم|20`);
+            return m.reply(`*❌ خطأ:* يجب كتابة الاسم والعمر مفصولين بـ |\n\nمثال:\nتسجيل هواري|20`);
         }
         
         if (isNaN(age) || age < 1 || age > 30) {
@@ -46,11 +46,11 @@ const handler = async (m, { conn, command, text }) => {
                 forwardingScore: 1,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363225356834044@newsletter',
-                    newsletterName: '𝐕𝐈𝐈7 ~ 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 🕷️',
+                    newsletterName: 'هہ‏‏وآريـﮯ',
                     serverMessageId: 0
                 },
                 externalAdReply: {
-                    title: "𝐏𝐎𝐌𝐍𝐈-𝐀𝐈 🎪 | الـسـيـرك الـرقـمـي",
+                    title: "هہ‏‏وآريـﮯ بيقول لك سجل دخولك",
                     body: "تـسـجـيـل جـديـد فـي الـسـيـرك",
                     thumbnailUrl: profilePic,
                     sourceUrl: '',
@@ -78,9 +78,9 @@ const handler = async (m, { conn, command, text }) => {
 ┃ @${m.sender.split('@')[0]}
 ┃ 🏷️ تم حذف بياناتك بنجاح
 
-╭─┈─┈─┈─⟞🎪⟝─┈─┈─┈─╮
+╭─┈─┈─┈─⟞✨⟝─┈─┈─┈─╮
 ┃ *يـمـكـنـك الـتـسـجـيـل مـرة أخـرى* 📝
-╰─┈─┈─┈─⟞🤡⟝─┈─┈─┈─╯`;
+╰─┈─┈─┈─⟞✨⟝─┈─┈─┈─╯`;
 
         await conn.sendMessage(m.chat, {
             image: { url: profilePic },
@@ -91,11 +91,11 @@ const handler = async (m, { conn, command, text }) => {
                 forwardingScore: 1,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '120363225356834044@newsletter',
-                    newsletterName: '𝐕𝐈𝐈7 ~ 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 🕷️',
+                    newsletterName: 'هہ‏‏وآريـﮯ',
                     serverMessageId: 0
                 },
                 externalAdReply: {
-                    title: "𝐏𝐎𝐌𝐍𝐈-𝐀𝐈 🎪 | الـسـيـرك الـرقـمـي",
+                    title: " الـسـيـرك الـرقـمـي",
                     body: "تـم حـذف الـتـسـجـيـل",
                     thumbnailUrl: profilePic,
                     sourceUrl: '',
