@@ -20,7 +20,7 @@ const CATEGORIES = [
 
 const getCat = n => CATEGORIES.find(c => c[0] === n);
 
-const IMAGE_URL = "https://g.top4top.io/p_3883b3a260.jpg";
+const IMAGE_URL = "https://j.top4top.io/p_3894432qz0.jpg";
 
 const context = (jid) => ({
     mentionedJid: [jid],
@@ -28,12 +28,12 @@ const context = (jid) => ({
     forwardingScore: 1,
     forwardedNewsletterMessageInfo: {
         newsletterJid: '1556853817@newsletter',
-        newsletterName: '𝑨𝑳𝑯𝑾𝑨𝑹𝒀',
+        newsletterName: '𓆩 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𓆪',
         serverMessageId: 0
     },
     externalAdReply: {
-        title: "• 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑪𝑶𝑹𝑬 •",
-        body: "SYSTEM: ONLINE",
+        title: "𓆩⚡ 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑪𝑶𝑹𝑬 ⚡𓆪",
+        body: "°⃟⚡ SYSTEM: ONLINE",
         thumbnailUrl: IMAGE_URL,
         sourceUrl: '',
         mediaType: 1,
@@ -56,7 +56,7 @@ async function handler(m, { conn, bot, command, args }) {
 
     if (!selected && !args[0]) {
         const sections = [{
-            title: "❖ الأقسام المتاحة ❖",
+            title: "𓆩⚡ الأقسام المتاحة ⚡𓆪",
             rows: CATEGORIES.map(c => ({
                 title: `${c[3]} ┃ ${c[1]}`,
                 description: `⇜ اضغط لعرض أوامر قسم ${c[1]} ⇝`,
@@ -65,15 +65,22 @@ async function handler(m, { conn, bot, command, args }) {
         }];
 
         const menuText = `
-┏━━━⟪ *𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𝑩𝑶𝑻* ⟫━━━┓
-┃
-┣─ 👤 *المستخدم* ： @${m.sender.split("@")[0]}
-┣─ ⏱️ *التشغيل* ： ${uptimeFormatted}
-┣─ 📅 *التاريخ* ： ${date}
-┣─ 🕒 *الوقت* ： ${time}
-┃
-┗━━━━━━━━━━━━━━━━━━━┛
-   ✦ صلِّ على النبي ✦`.trim();
+*╭━━━ 𝑨𝑳𝑯𝑾𝑨𝑹𝒀  ━━━°⃟⚡*
+> °⃟⚡ *المستخدم:* @${m.sender.split("@")[0]}
+> °⃟⚡ *التشغيل:* ${uptimeFormatted}
+> °⃟⚡ *التاريخ:* ${date}
+> °⃟⚡ *الوقت:* ${time}
+*╰━━━ 𝑨𝑳𝑯𝑾𝑨𝑹𝒀  ━━━°⃟⚡*
+
+> *𝐎𝐖𝐍𝐄𝐑: 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 👑*
+
+*╭━━━━━━━━━━°⃟⚡*
+ *〔 أهـلاً بـك في بوت  الـهـواري ⚡ 〕*
+ *〔 صلي علي النبي🌺 〕*
+*╰━━━━━━━━━━°⃟⚡*
+
+> ⚡ 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 — 𝑺𝒀𝑺𝑻𝑬𝑴 𝑶𝑵𝑳𝑰𝑵𝑬
+   `.trim();
 
         await conn.sendButtonNormal(m.chat, {
             media: { url: IMAGE_URL },
@@ -83,21 +90,21 @@ async function handler(m, { conn, bot, command, args }) {
                 {
                     name: "single_select",
                     params: {
-                        title: "✦ ┇ الأقسام ┇ ✦",
+                        title: "𓆩⚡┇ الأقسام ┇⚡𓆪",
                         sections: sections
                     }
                 },
                 {
                     name: "cta_url",
                     params: {
-                        display_text: "「 👑 المطور 」",
+                        display_text: "「 هہ‏‏وآريـﮯ 」",
                         url: "https://wa.me/201556853817"
                     }
                 },
                 {
                     name: "cta_url",
                     params: {
-                        display_text: "「 📡 القناة الرسمية 」",
+                        display_text: "「  القناة  」",
                         url: "https://whatsapp.com/channel/0029Vb6VF4R3bbUwgCtJlC3U"
                     }
                 }
@@ -133,11 +140,11 @@ async function handler(m, { conn, bot, command, args }) {
     }).join('\n');
 
     await conn.sendMessage(m.chat, { text: `
-┏━━━⟪ *قسم： ${cat[1]} ${cat[3]}* ⟫━━━┓
+*╭━━━ 𓆩 ${cat[3]} 𓆪 قسم： ${cat[1]} ━━━°⃟⚡*
 ┃
 ${cmdsList}
 ┃
-┗━━━━━━━━━━━━━━━━━━━━━┛
+*╰━━━━━━━━━━━━━━━━━━━°⃟⚡*
    ✦ رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا ✦`.trim(), contextInfo: context(m.sender) }, { quoted: m });
 }
 
