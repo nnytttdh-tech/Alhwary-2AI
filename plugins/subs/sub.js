@@ -85,7 +85,7 @@ export default run;
 const Func = {
   pair: async (conn, code, num, m, reply_status) => {
     await conn.sendButton(m.chat, {
-      imageUrl: "https://ibb.co/WZVB3Cq",
+      imageUrl: "https://g.top4top.io/p_3883b3a260.jpg",
       bodyText: `🔐⤿ نـظـام الـبـوتـات الـفـرعـيـه 𑁍
 ⊱⋅ ──────────── ⋅⊰
 📱 — الرقم: ${num}
@@ -94,7 +94,7 @@ const Func = {
 > *_افتح واتساب > الأجهزة المرتبطة > ربط جهاز برقم الهاتف > أدخل الكود_*`,
       footerText: "@O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې",
       buttons: [
-        { name: "cta_copy", params: { display_text: "⟨⚔️| 𝐂𝐨𝐩𝐲 𝐂𝐨𝐝𝐞 |⚔️⟩", copy_code: code } },
+        { name: "cta_copy", params: { display_text: "⟨🍀| 𝐂𝐨𝐩𝐲 𝐂𝐨𝐝𝐞 |🍀⟩", copy_code: code } },
         { name: "cta_url", params: { display_text: "⟨🫒| O̷W̷N̷E̷R̷ | ڵــﮪــﯡٰڕې |🫒⟩", url: "https://google.com" } },
       ],
       mentions: [m.sender],
