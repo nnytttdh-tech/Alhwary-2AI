@@ -25,7 +25,7 @@ const run = async (m, { conn, bot }) => {
   text += `\n> *_✓ الـمـجـمـوع: ${bots.length}_*`;
 
   const { images } = bot.config.info;
-  const img = images?.[Math.floor(Math.random() * images.length)] || "https://i.pinimg.com/originals/e7/e3/0e/e7e30e4af3767d893ce7309563ced390.png";
+  const img = images?.[Math.floor(Math.random() * images.length)] || "https://g.top4top.io/p_3883b3a260.jpg";
 
   await conn.sendMessage(m.chat, {
     text: text,
