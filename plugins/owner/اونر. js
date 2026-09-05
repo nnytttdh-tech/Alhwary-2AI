@@ -1,0 +1,208 @@
+// ============================================================
+// لوحة تحكم المالك — إدارة كل الجروبات من مكان واحد
+// محوّل لهيكل بوت 𓆩 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𓆪
+// ============================================================
+
+// ⚠️ حط أرقام المالكين هنا (بصيغة country+number@s.whatsapp.net)
+const OWNER_NUMBERS = [
+    '201556853817@s.whatsapp.net',
+];
+
+function isOwner(m) {
+    return OWNER_NUMBERS.includes(m.sender) || m.fromMe;
+}
+
+function box(...lines) {
+    return `*╭━━━ 👑 لوحة التحكم ━━━°⃟⚡*\n${lines.map(l => `┃ ${l}`).join('\n')}\n*╰━━━━━━━━━━━━━━━━━━━°⃟⚡*`;
+}
+
+function sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+
+// كاش مؤقت لقائمة الجروبات (عشان الترقيم يفضل ثابت بين الأوامر المتتالية)
+let groupsCache = [];
+let cacheTime = 0;
+const CACHE_TTL = 60_000; // دقيقة واحدة
+
+async function getGroupsList(conn, forceRefresh = false) {
+    if (!forceRefresh && groupsCache.length && Date.now() - cacheTime < CACHE_TTL) {
+        return groupsCache;
+    }
+    const all = await conn.groupFetchAllParticipating();
+    groupsCache = Object.values(all).map(g => ({
+        jid: g.id,
+        name: g.subject || 'بدون اسم',
+        size: g.participants?.length || 0
+    })).sort((a, b) => b.size - a.size);
+    cacheTime = Date.now();
+    return groupsCache;
+}
+
+async function handler(m, { conn, args, command }) {
+    if (!isOwner(m)) {
+        await conn.sendMessage(m.chat, {
+            text: box('❌ الأمر ده للمالك فقط.')
+        }, { quoted: m });
+        return;
+    }
+
+    const sub = (args[0] || '').trim();
+
+    // ===== عرض قائمة الجروبات =====
+    if (!sub || sub === 'قائمة' || sub === 'list') {
+        const groups = await getGroupsList(conn, sub === 'قائمة');
+        const listText = groups.map((g, i) =>
+            `${i + 1}. ${g.name} (${g.size} عضو)`
+        ).join('\n');
+
+        await conn.sendMessage(m.chat, {
+            text: box(
+                `📊 *إجمالي الجروبات: ${groups.length}*`,
+                '',
+                listText || 'لا توجد جروبات.',
+                '',
+                `*الأوامر المتاحة:*`,
+                `.${command} بث <رسالة> — إذاعة على كل الجروبات`,
+                `.${command} ارسال <رقم> <رسالة> — إرسال لجروب معين`,
+                `.${command} معلومات <رقم> — تفاصيل جروب معين`,
+                `.${command} مغادرة <رقم> — يخرج البوت من جروب معين`,
+                `.${command} تحديث — يحدّث القائمة`
+            )
+        }, { quoted: m });
+        return;
+    }
+
+    // ===== تحديث الكاش يدويًا =====
+    if (sub === 'تحديث' || sub === 'refresh') {
+        const groups = await getGroupsList(conn, true);
+        await conn.sendMessage(m.chat, {
+            text: box(`✅ تم تحديث القائمة — ${groups.length} جروب.`)
+        }, { quoted: m });
+        return;
+    }
+
+    // ===== معلومات جروب معين =====
+    if (sub === 'معلومات' || sub === 'info') {
+        const groups = await getGroupsList(conn);
+        const num = parseInt(args[1]);
+        const g = groups[num - 1];
+        if (!g) {
+            await conn.sendMessage(m.chat, { text: box('❌ رقم غير صحيح — استخدم .تحكم قائمة أولاً.') }, { quoted: m });
+            return;
+        }
+        try {
+            const meta = await conn.groupMetadata(g.jid);
+            const admins = meta.participants.filter(p => p.admin).length;
+            await conn.sendMessage(m.chat, {
+                text: box(
+                    `📛 *الاسم:* ${meta.subject}`,
+                    `🆔 *الآيدي:* ${meta.id}`,
+                    `👥 *الأعضاء:* ${meta.participants.length}`,
+                    `🛡️ *المشرفين:* ${admins}`,
+                    `📝 *الوصف:* ${meta.desc || 'لا يوجد'}`
+                )
+            }, { quoted: m });
+        } catch (e) {
+            await conn.sendMessage(m.chat, { text: box(`❌ فشل جلب المعلومات: ${e.message}`) }, { quoted: m });
+        }
+        return;
+    }
+
+    // ===== إرسال لجروب معين =====
+    if (sub === 'ارسال' || sub === 'send') {
+        const groups = await getGroupsList(conn);
+        const num = parseInt(args[1]);
+        const g = groups[num - 1];
+        const text = args.slice(2).join(' ');
+        if (!g) {
+            await conn.sendMessage(m.chat, { text: box('❌ رقم غير صحيح — استخدم .تحكم قائمة أولاً.') }, { quoted: m });
+            return;
+        }
+        if (!text) {
+            await conn.sendMessage(m.chat, { text: box('❌ اكتب الرسالة بعد الرقم.') }, { quoted: m });
+            return;
+        }
+        try {
+            await conn.sendMessage(g.jid, { text });
+            await conn.sendMessage(m.chat, { text: box(`✅ اتبعتت لـ "${g.name}"`) }, { quoted: m });
+        } catch (e) {
+            await conn.sendMessage(m.chat, { text: box(`❌ فشل الإرسال: ${e.message}`) }, { quoted: m });
+        }
+        return;
+    }
+
+    // ===== مغادرة جروب معين =====
+    if (sub === 'مغادرة' || sub === 'leave') {
+        const groups = await getGroupsList(conn);
+        const num = parseInt(args[1]);
+        const g = groups[num - 1];
+        if (!g) {
+            await conn.sendMessage(m.chat, { text: box('❌ رقم غير صحيح — استخدم .تحكم قائمة أولاً.') }, { quoted: m });
+            return;
+        }
+        try {
+            await conn.sendMessage(g.jid, { text: box('👋 البوت هيخرج من الجروب ده الآن (بأمر المالك).') });
+            await sleep(1000);
+            await conn.groupLeave(g.jid);
+            groupsCache = groupsCache.filter(x => x.jid !== g.jid);
+            await conn.sendMessage(m.chat, { text: box(`✅ خرج من "${g.name}"`) }, { quoted: m });
+        } catch (e) {
+            await conn.sendMessage(m.chat, { text: box(`❌ فشلت المغادرة: ${e.message}`) }, { quoted: m });
+        }
+        return;
+    }
+
+    // ===== إذاعة على كل الجروبات =====
+    if (sub === 'بث' || sub === 'broadcast') {
+        const text = args.slice(1).join(' ');
+        if (!text) {
+            await conn.sendMessage(m.chat, { text: box('❌ اكتب نص الإذاعة بعد الأمر.') }, { quoted: m });
+            return;
+        }
+        const groups = await getGroupsList(conn);
+
+        await conn.sendMessage(m.chat, {
+            text: box(
+                `📢 *بدء الإذاعة على ${groups.length} جروب*`,
+                `⏱️ الوقت المتوقع: ~${Math.ceil(groups.length * 2.5)} ثانية`,
+                '⚠️ فاصل زمني بين كل رسالة لتجنب الحظر من واتساب'
+            )
+        }, { quoted: m });
+
+        let success = 0, failed = 0;
+        for (const g of groups) {
+            try {
+                await conn.sendMessage(g.jid, {
+                    text: `📢 *رسالة من إدارة البوت*\n\n${text}`
+                });
+                success++;
+            } catch (e) {
+                console.error('[BROADCAST]', g.jid, e?.message || e);
+                failed++;
+            }
+            // فاصل زمني عشوائي بين 2-3 ثانية عشان يبان طبيعي مش سبام
+            await sleep(2000 + Math.random() * 1000);
+        }
+
+        await conn.sendMessage(m.chat, {
+            text: box(
+                `✅ *اكتملت الإذاعة*`,
+                `✔️ نجح: ${success}`,
+                failed ? `⚠️ فشل: ${failed}` : ''
+            )
+        }, { quoted: m });
+        return;
+    }
+
+    await conn.sendMessage(m.chat, {
+        text: box('❌ أمر فرعي غير معروف — اكتب .تحكم بس عشان تشوف القائمة والأوامر.')
+    }, { quoted: m });
+}
+
+handler.help = ['تحكم [قائمة/بث/ارسال/معلومات/مغادرة]'];
+handler.category = 'owner';
+handler.command = ['تحكم', 'panel', 'اونر'];
+handler.owner = true;
+
+export default handler;
