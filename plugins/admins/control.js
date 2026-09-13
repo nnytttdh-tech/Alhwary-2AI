@@ -1,62 +1,109 @@
-let control = async (m, { command, text, conn, bot, participants }) => {
+// ============================================================
+// إدارة الجروب — إضافة / طرد / رفع / خفض
+// محوّل لهيكل بوت 𓆩 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𓆪
+// ============================================================
+
+const IMAGE_URL = "https://j.top4top.io/p_3894432qz0.jpg";
+const BRAND = '𓆩 𝑨𝑳𝑯𝑾𝑨𝑹𝒀 𓆪';
+const NEWSLETTER_JID = '1556853817@newsletter';
+
+function box(...lines) {
+    return `*╭━━━ 👑 إدارة الجروب ━━━°⃟⚡*\n${lines.map(l => `┃ ${l}`).join('\n')}\n*╰━━━━━━━━━━━━━━━━━━━°⃟⚡*`;
+}
+
+function context(jid) {
+    return {
+        mentionedJid: [jid],
+        isForwarded: true,
+        forwardingScore: 1,
+        forwardedNewsletterMessageInfo: {
+            newsletterJid: NEWSLETTER_JID,
+            newsletterName: BRAND,
+            serverMessageId: 0
+        },
+        externalAdReply: {
+            title: `𓆩⚡ ${BRAND.replace(/𓆩|𓪪/g, '').trim()} 𝑪𝑶𝑹𝑬 ⚡𓆪`,
+            body: "°⃟⚡ SYSTEM: ONLINE",
+            thumbnailUrl: IMAGE_URL,
+            sourceUrl: '',
+            mediaType: 1,
+            renderLargerThumbnail: true
+        }
+    };
+}
+
+const Func = {
+    reply: async (conn, m, text) => {
+        await conn.sendMessage(m.chat, {
+            text: box(text),
+            contextInfo: context(m.sender)
+        }, { quoted: m });
+    }
+};
+
+const isBotOwner = (bot, userId) => {
+    if (!bot?.config?.owners) return false;
+    return bot.config.owners.some(owner => owner.jid === userId || owner.lid === userId);
+};
+
+const getUser = (m, text) => {
+    if (m.quoted) return m.quoted.sender;
+    if (m.mentionedJid?.length > 0) return m.mentionedJid[0];
+    if (text) {
+        const num = text.replace(/[+\s-]/g, '');
+        if (/^\d+$/.test(num)) return num + "@s.whatsapp.net";
+    }
+    return null;
+};
+
+const control = async (m, { command, text, conn, bot }) => {
     try {
-        const isBotOwner = (userId) => {
-            if (!bot.config || !bot.config.owners) return false;
-            return bot.config.owners.some(owner => 
-                owner.jid === userId || owner.lid === userId
-            );
-        };
-
-        const getUser = () => {
-            if (m.quoted) return m.quoted.sender;
-            if (m.mentionedJid && m.mentionedJid.length > 0) return m.mentionedJid[0];
-            if (text) return text + "@s.whatsapp.net";
-            return null;
-        };
-
         if (command === "ضيف") {
-            if (!text) return m.reply("❌ فين الرقم؟");
-            if (m.quoted) {
-                await conn.groupParticipantsUpdate(m.chat, [m.quoted.sender], 'add');
-                return m.reply("*✅ تمت الإضافة*");
+            if (!text) return Func.reply(conn, m, `❌ فين الرقم؟`);
+
+            let target = null;
+            if (m.quoted) target = m.quoted.sender;
+            else if (m.mentionedJid?.length > 0) target = m.mentionedJid[0];
+            else {
+                const num = text.replace(/[+\s-]/g, '');
+                if (!/^\d+$/.test(num)) return Func.reply(conn, m, `⚠️ رقم الهاتف غير صالح.`);
+                target = num + "@s.whatsapp.net";
             }
-            if (m.mentionedJid && m.mentionedJid.length > 0) {
-                await conn.groupParticipantsUpdate(m.chat, [m.mentionedJid[0]], 'add');
-                return m.reply("*✅ تمت الإضافة*");
-            }
-            await conn.groupParticipantsUpdate(m.chat, [text + "@s.whatsapp.net"], 'add');
-            return m.reply("*✅ تمت الإضافة*");
+
+            await conn.groupParticipantsUpdate(m.chat, [target], 'add');
+            return Func.reply(conn, m, `✅ *تمت الإضافة*`);
         }
-        
+
         if (command === "طرد") {
-            let user = getUser();
-            if (!user) return m.reply("❌ منشن أو رد على العضو");
-            
-            if (isBotOwner(user) || user === conn.user.id) {
-                m.reply("بتهزر ؟");
-                return await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+            const user = getUser(m, text);
+            if (!user) return Func.reply(conn, m, `❌ منشن أو رد على العضو`);
+
+            if (isBotOwner(bot, user) || user === conn.user.id) {
+                await Func.reply(conn, m, `😏 بتهزر؟`);
+                await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+                return;
             }
-            
+
             await conn.groupParticipantsUpdate(m.chat, [user], 'remove');
-            return m.reply("✅ تم الطرد");
+            return Func.reply(conn, m, `✅ تم الطرد`);
         }
-        
+
         if (command === "رفع") {
-            let user = getUser();
-            if (!user) return m.reply("❌ منشن أو رد على العضو");
+            const user = getUser(m, text);
+            if (!user) return Func.reply(conn, m, `❌ منشن أو رد على العضو`);
             await conn.groupParticipantsUpdate(m.chat, [user], 'promote');
-            return m.reply("✅ تم الرفع");
+            return Func.reply(conn, m, `✅ تم الرفع`);
         }
-        
+
         if (command === "خفض") {
-            let user = getUser();
-            if (!user) return m.reply("❌ منشن أو رد على العضو");
+            const user = getUser(m, text);
+            if (!user) return Func.reply(conn, m, `❌ منشن أو رد على العضو`);
             await conn.groupParticipantsUpdate(m.chat, [user], 'demote');
-            return m.reply("✅ تم الخفض");
+            return Func.reply(conn, m, `✅ تم الخفض`);
         }
-        
+
     } catch (error) {
-        await m.reply("❌ " + error.message);
+        await Func.reply(conn, m, `❌ حصل خطأ: ${error.message}`);
     }
 };
 
@@ -65,4 +112,5 @@ control.command = ['ضيف', 'طرد', 'رفع', 'خفض'];
 control.admin = true;
 control.botAdmin = true;
 control.category = "admin";
+
 export default control;
