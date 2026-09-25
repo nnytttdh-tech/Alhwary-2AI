@@ -5,7 +5,7 @@ import sub from './sub.js';
 
 /* =========== Client ========== */
 const client = new Client({
-  phoneNumber:'201229982764', // Bot number
+  phoneNumber:'963989296824', // Bot number
   prefix: [".", "/", "!"],
   fromMe: false, 
   owners: [
